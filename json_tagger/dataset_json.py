@@ -49,6 +49,7 @@ class DatasetJSONMappings:
             if not path_root:
                 raise('No JSON files or directory supplied. Set JSON_TAGGER_ROOT to provide a root for the json files.')
 
+            path_root = os.path.abspath(path_root)
             # Generate a list of all JSON files
             json_files = Path('/').glob(os.path.join(path_root.lstrip('/'), '**/*.json'))
 
