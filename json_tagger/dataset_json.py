@@ -21,12 +21,12 @@ logger = logging.getLogger()
 
 class DatasetJSONMappings:
 
-    def __init__(self, json_files):
+    def __init__(self, json_files=None):
         """
         :param json_files: A collection of json files to read in.
         """
         if not json_files:
-            logger.warning('No JSON files loaded')
+            logger.warning('No JSON files provided, will look for JSON_TAGGER_ROOT environment var')
 
         # A mapping between the datasets and the filepath to the JSON file
         # containing the mappings
@@ -37,9 +37,6 @@ class DatasetJSONMappings:
         self._user_json_cache = {}
 
         # Init tree
-        if json_files is None:
-            json_files = list()
-
         self._dataset_tree = DatasetNode()
 
         # Load local JSON files
@@ -47,20 +44,22 @@ class DatasetJSONMappings:
             path_root = os.environ.get('JSON_TAGGER_ROOT')
 
             if not path_root:
-                raise('No JSON files or directory supplied. Set JSON_TAGGER_ROOT to provide a root for the json files.')
+                raise ValueError('No JSON files or directory supplied. '
+                                 'Set JSON_TAGGER_ROOT to provide a root for the json files.')
 
             path_root = os.path.abspath(path_root)
+
             # Generate a list of all JSON files
             json_files = Path('/').glob(os.path.join(path_root.lstrip('/'), '**/*.json'))
 
         # Read all the json files and build a tree of datasets
-        for file in json_files:
+        for f in json_files:
 
-            with open(file) as json_input:
+            with open(f) as json_input:
                 try:
                     data = json.load(json_input)
                 except json.decoder.JSONDecodeError as e:
-                    print(f'Error loading {file}: {e}')
+                    print(f'Error loading {f}: {e}')
                     continue
 
                 for dataset in data.get('datasets',[]):
@@ -69,7 +68,7 @@ class DatasetJSONMappings:
                     dataset = dataset.rstrip('/')
 
                     self._dataset_tree.add_child(dataset)
-                    self._json_lookup[dataset] = file
+                    self._json_lookup[dataset] = f
 
     def get_dataset(self, path):
         """
@@ -245,9 +244,9 @@ if __name__ == '__main__':
 
     tree = DatasetJSONMappings(None)
 
-    for file in files:
+    for f in files:
         print("Dataset")
-        ds = tree.get_dataset(file)
+        ds = tree.get_dataset(f)
         print(ds)
         print()
 
