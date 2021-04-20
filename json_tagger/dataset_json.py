@@ -44,13 +44,16 @@ class DatasetJSONMappings:
             path_root = os.environ.get('JSON_TAGGER_ROOT')
 
             if not path_root:
-                raise ValueError('No JSON files or directory supplied. '
-                                 'Set JSON_TAGGER_ROOT to provide a root for the json files.')
+                logger.warning('No JSON files or directory supplied, not tags have been loaded.'
+                               'Set JSON_TAGGER_ROOT to provide a root for the json files.')
 
-            path_root = os.path.abspath(path_root)
+                json_files = []
+            else:
 
-            # Generate a list of all JSON files
-            json_files = Path('/').glob(os.path.join(path_root.lstrip('/'), '**/*.json'))
+                path_root = os.path.abspath(path_root)
+
+                # Generate a list of all JSON files
+                json_files = Path('/').glob(os.path.join(path_root.lstrip('/'), '**/*.json'))
 
         # Read all the json files and build a tree of datasets
         for f in json_files:
