@@ -42,9 +42,10 @@ class DatasetJSONMappings:
         # Load local JSON files
         if not json_files:
             path_root = os.environ.get('JSON_TAGGER_ROOT')
+            logger.debug(f'Attempted to use JSON_TAGGER_ROOT env var. {path_root}')
 
             if not path_root:
-                logger.warning('No JSON files or directory supplied, not tags have been loaded.'
+                logger.warning('No JSON files or directory supplied, no tags have been loaded.'
                                'Set JSON_TAGGER_ROOT to provide a root for the json files.')
 
                 json_files = []
