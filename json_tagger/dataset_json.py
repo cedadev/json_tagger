@@ -42,7 +42,7 @@ class DatasetJSONMappings:
         # Load local JSON files
         if not json_files:
             path_root = os.environ.get('JSON_TAGGER_ROOT')
-            logger.debug(f'Attempted to use JSON_TAGGER_ROOT env var. {path_root}')
+            logger.info(f'Attempted to use JSON_TAGGER_ROOT env var. {path_root}')
 
             if not path_root:
                 logger.warning('No JSON files or directory supplied, no tags have been loaded.'
@@ -57,6 +57,7 @@ class DatasetJSONMappings:
                 json_files = Path('/').glob(os.path.join(path_root.lstrip('/'), '**/*.json'))
 
         # Read all the json files and build a tree of datasets
+        i = 0
         for f in json_files:
 
             with open(f) as json_input:
@@ -73,6 +74,9 @@ class DatasetJSONMappings:
 
                     self._dataset_tree.add_child(dataset)
                     self._json_lookup[dataset] = f
+            i += 1
+
+        logging.info(f'Loaded {i} JSON files')
 
     def get_dataset(self, path):
         """
