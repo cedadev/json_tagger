@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "json-tagger"
+version = "0.1.0"
+description = ""
+authors = ["Richard Smith <support@ceda.ac.uk>"]
+license = "BSD-3-Clause"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+ceda-directory-tree = {git = "https://github.com/cedadev/ceda-directory-tree.git", branch = "master"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
