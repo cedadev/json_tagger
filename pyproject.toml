@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-ceda-directory-tree = {git = "https://github.com/cedadev/ceda-directory-tree.git", tag = "1.0.2"}
+ceda-directory-tree = {git = "https://github.com/cedadev/ceda-directory-tree.git", tag = "v1.0.2"}
 
 
 [build-system]
